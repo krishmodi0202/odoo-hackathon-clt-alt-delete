@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 // Signup route
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password,location,contact } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -17,7 +17,7 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({ name, email, password: hashedPassword,location,contact });
     await newUser.save();
 
     // Generate JWT token
@@ -25,7 +25,7 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).json({ token, user: { id: newUser._id, name, email } });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: error });
   }
 });
 

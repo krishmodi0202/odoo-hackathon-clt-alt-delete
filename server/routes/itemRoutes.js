@@ -1,8 +1,10 @@
 const express = require("express");
 const Item = require("../models/Item");
 const Barter = require("../models/BarterItem"); // Import Barter model
-const authMiddleware = require("./authMiddleware");
+const User = require("../models/User"); // Ensure user is correctly referenced
+const authenticateToken = require("./authMiddleware"); // Fixed import
 const multer = require("multer");
+const path = require("path");
 
 const router = express.Router();
 
@@ -15,15 +17,18 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// GET all items (filtered by user location)
-router.get("/", authMiddleware, async (req, res) => {
+// 📌 GET: All items (filtered by user location)
+router.get("/", authenticateToken, async (req, res) => {
   try {
-    const user = req.user; // Get user details from middleware
-    if (!user.location) {
-      return res.status(400).json({ error: "User location is required" });
+    const user = req.user;
+
+    if (!user || !user.location) {
+      return res.status(400).json({ error: "User location is required. Please update your profile." });
     }
-    
-    const items = await Item.find({ location: user.location }).populate("user", "name email contact");
+
+    const items = await Item.find({ location: user.location }).populate("userId", "name email contact");
+    console.log(items)
+
     res.json(items);
   } catch (error) {
     console.error("Error fetching items:", error);
@@ -31,33 +36,42 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// POST route to add an item
-router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
+// 📌 POST: Add a new barter item
+router.post("/", authenticateToken, upload.single("image"), async (req, res) => {
+  console.log("Headers:", req.headers.authorization); // Debugging: Check token
+
   try {
     const { title, description, location, category, barterOption } = req.body;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+    console.log(req.body)
+
+    if (!title || !description || !location || !category || !barterOption) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const imagePath = req.file ? `http://localhost:4000/uploads/${req.file.filename}` : null;
 
     const newItem = new Item({
-      title,
-      description,
-      location,
-      category,
-      barterOption,
+      userId: req.user._id,
+      title:title,
+      description:description,
+      location:location,
+      category:category,
+      barterOption:barterOption,
       image: imagePath,
-      user: req.user.id, // Linking item to logged-in user
+       // Linking item to logged-in user
     });
 
     await newItem.save();
 
-    // If the item is meant for barter, add it to the barter system
-    if (barterOption !== "Giveaway") { 
-      const newBarter = new Barter({
-        itemId: newItem._id,
-        owner: req.user.id,
-        status: "available",
-      });
-      await newBarter.save();
-    }
+    // 📌 If the item is for barter, add it to BarterItem collection
+    // if (barterOption !== "Giveaway") {
+    //   const newBarter = new Barter({
+    //     itemId: newItem._id,
+    //     owner: req.user._id,
+    //     status: "available",
+    //   });
+    //   await newBarter.save();
+    // }
 
     res.status(201).json({ message: "Item added successfully", item: newItem });
   } catch (error) {
@@ -66,35 +80,54 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   }
 });
 
-// GET a single item by ID
-router.get("/:id", authMiddleware, async (req, res) => {
+// 📌 GET: Fetch all user items
+router.get("/user", authenticateToken, async (req, res) => {
   try {
-    const item = await Item.findById(req.params.id).populate("user", "name email contact");
+    const userItems = await Item.find({ userId: req.user._id });
+    res.json(userItems);
+  } catch (error) {
+    console.error("Error fetching user items:", error);
+    res.status(500).json({ error: "Error fetching user items" });
+  }
+});
+
+// 📌 GET: Fetch a single item by ID
+router.get("/:id", authenticateToken, async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id).populate("userId");
+    console.log(item)
     if (!item) return res.status(404).json({ error: "Item not found" });
     res.json(item);
   } catch (error) {
+    console.error("Error fetching item:", error);
     res.status(500).json({ error: "Error fetching item" });
   }
 });
 
-// UPDATE an item
-router.put("/:id", authMiddleware, async (req, res) => {
+// 📌 PUT: Update an item
+router.put("/:id", authenticateToken, async (req, res) => {
   try {
     const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedItem) return res.status(404).json({ error: "Item not found" });
     res.json(updatedItem);
   } catch (error) {
+    console.error("Error updating item:", error);
     res.status(500).json({ error: "Error updating item" });
   }
 });
 
-// DELETE an item
-router.delete("/:id", authMiddleware, async (req, res) => {
+// 📌 DELETE: Remove an item (also remove from barter system)
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const deletedItem = await Item.findByIdAndDelete(req.params.id);
     if (!deletedItem) return res.status(404).json({ error: "Item not found" });
+
+    // Also remove from barter system if it exists
+    await Barter.deleteOne({ itemId: req.params.id });
+
     res.json({ message: "Item deleted successfully" });
   } catch (error) {
+    console.error("Error deleting item:", error);
     res.status(500).json({ error: "Error deleting item" });
   }
 });

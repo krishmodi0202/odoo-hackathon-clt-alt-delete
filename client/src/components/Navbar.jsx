@@ -16,12 +16,16 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 fixed w-full z-10 shadow-md">
+    <nav className="bg-gradient-to-r from-indigo-600 to-purple-600 fixed w-full z-10 shadow-md mt-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/dashboard" className="flex-shrink-0">
-              <span className="text-white text-xl font-bold">BarterHub</span>
+            <Link to="/dashboard" className="flex-shrink-0 flex items-center">
+            <img 
+  src="/logo.png" 
+  alt="Bizora Logo" 
+  className="h-12.5 w-40 mr-2" 
+/>
             </Link>
             
             <div className="hidden md:block">
@@ -139,3 +143,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

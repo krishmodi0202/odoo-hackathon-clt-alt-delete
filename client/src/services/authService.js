@@ -1,14 +1,28 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth"; 
+const API_URL = "http://localhost:4000/api/auth"; 
 
 // Signup Request
+// export const signup = async (userData) => {
+//   try {
+//     console.log(userData)
+//     const response = await axios.post(`${API_URL}/signup`, userData);
+//     return response;
+//   } catch (error) {
+//     throw error.response;
+//   }
+// };
+
 export const signup = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/signup`, userData);
-    return response.data;
+    const response = await axios.post(`${API_URL}/signup`, userData, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    return response.data; // ✅ Only return actual data, NOT the whole response object
   } catch (error) {
-    throw error.response.data;
+    console.error("Signup error:", error.response?.data || error.message);
+    throw error.response?.data || new Error("Signup failed");
   }
 };
 
@@ -18,6 +32,7 @@ export const login = async (userData) => {
     const response = await axios.post(`${API_URL}/login`, userData);
     return response.data;
   } catch (error) {
+    console(error)
     throw error.response.data;
   }
 };
