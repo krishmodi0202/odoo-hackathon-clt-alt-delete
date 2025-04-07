@@ -25,12 +25,12 @@ const authRoutes = require("./routes/auth.routes");
 const itemRoutes = require("./routes/itemRoutes");
 const barterRoutes = require("./routes/barterRoutes");
 const requestRoutes = require("./routes/requests")
-
 // Use routes
 app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/barter-items", barterRoutes);
 app.use("/api/requests",requestRoutes)
+
 // app.get("/api/items/:id", async (req, res) => {
 //   try {
 //     const item = await Item.findById(req.params.id); // Fetch item by ID

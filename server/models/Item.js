@@ -7,7 +7,7 @@ const itemSchema = new mongoose.Schema({
   location: { type: String, required: true },
   category: { type: String, required: true },
   barterOption: { type: String, required: true },
-  image: { type: String, required: true }, // Store image URL
+  image: [String], // Store image URL
   createdAt: { type: Date, default: Date.now }
 });
 

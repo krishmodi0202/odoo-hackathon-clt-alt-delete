@@ -7,6 +7,8 @@ import PostItem from "./pages/PostItem";
 import MyBarter from "./pages/MyBarter"; // Correct path based on your project structure
 import Requests from "./pages/Requests";
 import ItemDetails from "./pages/ItemDetails";
+import EditItem from "./pages/EditItem";
+
 const App = () => {
   const [user, setUser] = useState(null);
 
@@ -23,6 +25,7 @@ const App = () => {
         <Route path="/my-barter" element={<MyBarter />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/item/:id" element={<ItemDetails />} /> {/* Item details route */}
+        <Route path="/edit-item/:id" element={<EditItem />} />
         {/* Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

@@ -255,7 +255,7 @@ export const getReceivedBarterRequests = async (token) => {
 // Accept or Decline a barter request
 export const updateBarterRequestStatus = async (requestId, status, token) => {
   try {
-    const response = await axios.patch(
+    const response = await axios.put(
       `${API_URL}/requests/${requestId}`,
       { status },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -266,3 +266,12 @@ export const updateBarterRequestStatus = async (requestId, status, token) => {
     throw error;
   }
 };
+
+export const getSentBarterRequests = async (token) => {
+  const res = await axios.get("http://localhost:4000/api/requests/sent", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
+}

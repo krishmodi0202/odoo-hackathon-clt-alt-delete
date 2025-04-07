@@ -37,18 +37,19 @@ router.get("/", authenticateToken, async (req, res) => {
 });
 
 // 📌 POST: Add a new barter item
-router.post("/", authenticateToken, upload.single("image"), async (req, res) => {
+router.post("/", authenticateToken, upload.array("image", 5), async (req, res) => {
   console.log("Headers:", req.headers.authorization); // Debugging: Check token
 
   try {
     const { title, description, location, category, barterOption } = req.body;
     console.log(req.body)
 
-    if (!title || !description || !location || !category || !barterOption) {
+    if (!title || !description || !location || !category || !barterOption||req.files.length < 3) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const imagePath = req.file ? `http://localhost:4000/uploads/${req.file.filename}` : null;
+    const imagePaths = req.files ? req.files.map(file => `http://localhost:4000/uploads/${file.filename}`) : [];
+
 
     const newItem = new Item({
       userId: req.user._id,
@@ -57,7 +58,7 @@ router.post("/", authenticateToken, upload.single("image"), async (req, res) => 
       location:location,
       category:category,
       barterOption:barterOption,
-      image: imagePath,
+      image: imagePaths,
        // Linking item to logged-in user
     });
 

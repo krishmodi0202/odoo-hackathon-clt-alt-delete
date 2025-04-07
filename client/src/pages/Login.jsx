@@ -92,7 +92,7 @@ const Login = () => {
       console.log("Stored Token:", localStorage.getItem("token"));
       navigate("/dashboard"); // Redirect to dashboard after login
     } catch (err) {
-      setError(err.message);
+      setError("Failed to Login");
     }
   };
   
