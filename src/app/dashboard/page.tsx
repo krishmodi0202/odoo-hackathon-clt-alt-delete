@@ -12,7 +12,8 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   ArrowRightIcon,
-  ChatBubbleLeftRightIcon
+  ChatBubbleLeftRightIcon,
+  PencilIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -297,6 +298,17 @@ export default function DashboardPage() {
                 </div>
                 <ArrowRightIcon className="h-5 w-5 text-gray-400" />
               </Link>
+
+              <Link 
+                href="/my-items" 
+                className="flex items-center justify-between p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+              >
+                <div className="flex items-center">
+                  <PencilIcon className="h-6 w-6 text-orange-600 mr-3" />
+                  <span className="font-medium">Manage My Items</span>
+                </div>
+                <ArrowRightIcon className="h-5 w-5 text-gray-400" />
+              </Link>
             </div>
           </div>
 
@@ -362,11 +374,35 @@ export default function DashboardPage() {
                       <p className="font-medium">{item.title}</p>
                       <p className="text-sm text-gray-500">
                         Listed on {new Date(item.created_at).toLocaleDateString()}
+                        {item.status !== 'available' && (
+                          <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
+                            item.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            item.status === 'swapped' ? 'bg-gray-100 text-gray-800' :
+                            'bg-blue-100 text-blue-800'
+                          }`}>
+                            {item.status}
+                          </span>
+                        )}
                       </p>
                     </div>
-                    <Link href={`/items/${item.id}`} className="text-emerald-600 hover:text-emerald-500">
-                      View
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      {item.status === 'available' && (
+                        <Link 
+                          href={`/items/${item.id}/edit`} 
+                          className="text-blue-600 hover:text-blue-500 p-1 rounded hover:bg-blue-50"
+                          title="Edit Item"
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                        </Link>
+                      )}
+                      <Link 
+                        href={`/items/${item.id}`} 
+                        className="text-emerald-600 hover:text-emerald-500"
+                        title="View Item"
+                      >
+                        View
+                      </Link>
+                    </div>
                   </div>
                 ))}
                 
@@ -403,6 +439,8 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+
       </div>
     </div>
   );

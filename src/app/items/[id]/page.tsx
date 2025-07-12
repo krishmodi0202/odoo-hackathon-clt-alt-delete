@@ -15,7 +15,8 @@ import {
   ChatBubbleLeftRightIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
-  XCircleIcon
+  XCircleIcon,
+  PencilIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import Link from 'next/link';
@@ -394,8 +395,20 @@ export default function ItemDetailPage() {
               )}
 
               {isOwner && (
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <p className="text-blue-800">This is your item</p>
+                <div className="space-y-4">
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <p className="text-blue-800">This is your item</p>
+                  </div>
+                  
+                  {item.status === 'available' && (
+                    <Link
+                      href={`/items/${item.id}/edit`}
+                      className="w-full btn-secondary flex items-center justify-center"
+                    >
+                      <PencilIcon className="h-5 w-5 mr-2" />
+                      Edit Item
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
