@@ -25,6 +25,7 @@ export default function DashboardPage() {
     itemsListed: 0,
     successfulSwaps: 0,
     pointsEarned: 0,
+    currentPoints: 0,
     memberSince: ''
   });
 
@@ -68,10 +69,14 @@ export default function DashboardPage() {
         return sum;
       }, 0) || 0;
 
+      // Get current points from profile
+      const currentPoints = profile?.points || 0;
+
       setStats({
         itemsListed,
         successfulSwaps,
         pointsEarned,
+        currentPoints,
         memberSince: new Date(user.created_at).toLocaleDateString()
       });
     } catch (error) {
@@ -149,6 +154,43 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Points Display Section */}
+        <div className="mb-12">
+          <div className="card p-8 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="p-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl mr-6">
+                  <CurrencyDollarIcon className="h-10 w-10 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Your Points Balance</h2>
+                  <p className="text-gray-600">Earn points by swapping items and participating in the community</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-5xl font-bold text-amber-600 mb-2">{stats.currentPoints}</div>
+                <div className="text-sm text-gray-500">Total Points</div>
+              </div>
+            </div>
+            
+            {/* Points breakdown */}
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4 bg-white rounded-lg">
+                <div className="text-2xl font-bold text-emerald-600 mb-1">{stats.currentPoints}</div>
+                <div className="text-sm text-gray-600">Current Balance</div>
+              </div>
+              <div className="text-center p-4 bg-white rounded-lg">
+                <div className="text-2xl font-bold text-blue-600 mb-1">{stats.pointsEarned}</div>
+                <div className="text-sm text-gray-600">Points Earned</div>
+              </div>
+              <div className="text-center p-4 bg-white rounded-lg">
+                <div className="text-2xl font-bold text-purple-600 mb-1">{stats.successfulSwaps}</div>
+                <div className="text-sm text-gray-600">Successful Swaps</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div className="card p-6">
@@ -181,8 +223,8 @@ export default function DashboardPage() {
                 <CurrencyDollarIcon className="h-6 w-6 text-amber-600" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">Points Earned</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.pointsEarned}</p>
+                <p className="text-sm font-medium text-gray-600">Current Points</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.currentPoints}</p>
               </div>
             </div>
           </div>
@@ -200,7 +242,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Actions and Points Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="card p-8">
             <h3 className="text-2xl font-bold mb-4">Quick Actions</h3>
@@ -237,6 +279,41 @@ export default function DashboardPage() {
                 </div>
                 <ArrowRightIcon className="h-5 w-5 text-gray-400" />
               </Link>
+            </div>
+          </div>
+
+          <div className="card p-8">
+            <h3 className="text-2xl font-bold mb-4">How to Earn Points</h3>
+            <div className="space-y-4">
+              <div className="flex items-center p-4 bg-green-50 rounded-lg">
+                <div className="p-2 bg-green-100 rounded-lg mr-3">
+                  <SparklesIcon className="h-5 w-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">List an Item</p>
+                  <p className="text-sm text-gray-600">Earn 10 points for each item you list</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center p-4 bg-blue-50 rounded-lg">
+                <div className="p-2 bg-blue-100 rounded-lg mr-3">
+                  <HeartIcon className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">Complete a Swap</p>
+                  <p className="text-sm text-gray-600">Earn points equal to the item's value</p>
+                </div>
+              </div>
+
+              <div className="flex items-center p-4 bg-purple-50 rounded-lg">
+                <div className="p-2 bg-purple-100 rounded-lg mr-3">
+                  <ChatBubbleLeftRightIcon className="h-5 w-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">Welcome Bonus</p>
+                  <p className="text-sm text-gray-600">Get 100 points when you join</p>
+                </div>
+              </div>
             </div>
           </div>
 
