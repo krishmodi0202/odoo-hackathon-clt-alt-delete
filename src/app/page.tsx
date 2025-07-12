@@ -284,7 +284,7 @@ export default function Home() {
               Making fashion sustainable, one swap at a time. Join the revolution!
             </p>
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
-              <span>&copy; 2024 {APP_CONFIG.name}</span>
+              <span>&copy; 2025 {APP_CONFIG.name}</span>
               <span>•</span>
               <span>Built with ❤️ for the planet</span>
             </div>
