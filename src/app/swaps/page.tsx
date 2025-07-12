@@ -55,9 +55,10 @@ export default function SwapsPage() {
 
     try {
       setLoadingSwaps(true);
+      console.log('Fetching swaps for user:', user.id);
 
-      // Fetch swaps where user is the requester (sent swaps)
-      const { data: sentData } = await supabase
+      // 1. First, fetch sent swaps (where user is the requester)
+      const { data: sentData, error: sentError } = await supabase
         .from('swaps')
         .select(`
           *,
@@ -67,7 +68,7 @@ export default function SwapsPage() {
             images,
             points_value
           ),
-          profiles!items(user_id) (
+          profiles (
             id,
             full_name,
             email
@@ -76,30 +77,61 @@ export default function SwapsPage() {
         .eq('requester_id', user.id)
         .order('created_at', { ascending: false });
 
-      // Fetch swaps for items owned by user (received swaps)
-      const { data: receivedData } = await supabase
-        .from('swaps')
-        .select(`
-          *,
-          items (
-            id,
-            title,
-            images,
-            points_value
-          ),
-          profiles!swaps(requester_id) (
-            id,
-            full_name,
-            email
-          )
-        `)
-        .eq('items.user_id', user.id)
-        .order('created_at', { ascending: false });
+      if (sentError) {
+        console.error('Error fetching sent swaps:', sentError);
+        throw sentError;
+      }
+
+      console.log('Sent swaps:', sentData);
+
+      // 2. Fetch received swaps (for items owned by the user)
+      // First, get all items owned by the user
+      const { data: userItems, error: itemsError } = await supabase
+        .from('items')
+        .select('id')
+        .eq('user_id', user.id);
+
+      if (itemsError) {
+        console.error('Error fetching user items:', itemsError);
+        throw itemsError;
+      }
+
+      const userItemIds = userItems?.map(item => item.id) || [];
+      
+      let receivedData = [];
+      if (userItemIds.length > 0) {
+        const { data: receivedSwaps, error: receivedError } = await supabase
+          .from('swaps')
+          .select(`
+            *,
+            items!inner (
+              id,
+              title,
+              images,
+              points_value
+            ),
+            profiles (
+              id,
+              full_name,
+              email
+            )
+          `)
+          .in('item_id', userItemIds)
+          .order('created_at', { ascending: false });
+
+        if (receivedError) {
+          console.error('Error fetching received swaps:', receivedError);
+          throw receivedError;
+        }
+        receivedData = receivedSwaps || [];
+        console.log('Received swaps:', receivedData);
+      }
 
       setSentSwaps(sentData || []);
-      setReceivedSwaps(receivedData || []);
+      setReceivedSwaps(receivedData);
     } catch (error) {
-      console.error('Error fetching swaps:', error);
+      console.error('Error in fetchSwaps:', error);
+      alert('Failed to load swaps. Please check the console for details.');
     } finally {
       setLoadingSwaps(false);
     }
