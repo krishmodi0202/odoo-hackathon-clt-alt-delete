@@ -22,7 +22,7 @@
 
 | Name | Email | Role |
 |------|-------|------|
-| **Krish Modi** | keishmodi33@gmail.com | Full Stack Developer |
+| **Krish Modi** | krishmodi33@gmail.com | Full Stack Developer |
 | **Ansh Soni** | ansh.soni0403@gmail.com | Frontend Developer |
 | **Pratham Patel** | pratham042002@gmail.com | Backend Developer |
 | **Aneri Shah** | anerishah2424@gmail.com | UI/UX Designer |
