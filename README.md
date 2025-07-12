@@ -11,7 +11,7 @@
 
 ### 🚀 **Team CLT-ALT-DLT** | **Team #2213**
 
-[![GitHub Stars](https://img.shields.io/github/stars/your-username/rewear-app?style=for-the-badge&logo=github)]([https://github.com/your-username/rewear-app](https://github.com/krishmodi0202/odoo-hackathon-clt-alt-delete/blob/main/README.md))
+[![GitHub Stars](https://img.shields.io/github/stars/krishmodi0202/odoo-hackathon-clt-alt-delete?style=for-the-badge&logo=github)](https://github.com/krishmodi0202/odoo-hackathon-clt-alt-delete)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 </div>
@@ -49,7 +49,11 @@ ReWear is a modern, sustainable fashion platform that enables users to exchange 
 
 <div align="center">
 
-![Platform Preview](https://drive.google.com/file/d/1nVG45XkISGBOafVPvjGwRVfyQNmvpr_a/view)
+### 📸 **Platform Preview**
+
+[![ReWear Platform Demo](https://img.shields.io/badge/View%20Demo%20Video-Google%20Drive-blue?style=for-the-badge&logo=google-drive)](https://drive.google.com/file/d/1nVG45XkISGBOafVPvjGwRVfyQNmvpr_a/view?usp=sharing)
+
+**Click the button above to watch our platform demo video! 🎥**
 
 </div>
 
@@ -107,8 +111,8 @@ ReWear is a modern, sustainable fashion platform that enables users to exchange 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/rewear-app.git
-   cd rewear-app
+   git clone https://github.com/krishmodi0202/odoo-hackathon-clt-alt-delete.git
+   cd odoo-hackathon-clt-alt-delete
    ```
 
 2. **Install dependencies**
@@ -388,6 +392,6 @@ This project was developed as part of the **Odoo Hackathon 2025** by **Team CLT-
 
 **Made with ❤️ for sustainable fashion and the planet**
 
-[![GitHub](https://img.shields.io/badge/GitHub-View%20Source-black?style=for-the-badge&logo=github)](https://github.com/your-username/rewear-app)
+[![GitHub](https://img.shields.io/badge/GitHub-View%20Source-black?style=for-the-badge&logo=github)](https://github.com/krishmodi0202/odoo-hackathon-clt-alt-delete)
 
 </div>
