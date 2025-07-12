@@ -48,7 +48,7 @@ export default function DashboardPage() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      // Fetch user's swaps
+      // Fetch user's swaps (both as requester and as item owner)
       const { data: swapsData } = await supabase
         .from('swaps')
         .select(`
@@ -56,10 +56,11 @@ export default function DashboardPage() {
           items (
             id,
             title,
-            images
+            images,
+            user_id
           )
         `)
-        .eq('requester_id', user.id)
+        .or(`requester_id.eq.${user.id},items.user_id.eq.${user.id}`)
         .order('created_at', { ascending: false });
 
       setUserItems(itemsData || []);
@@ -79,7 +80,20 @@ export default function DashboardPage() {
 
       // Calculate stats
       const itemsListed = itemsData?.length || 0;
-      const successfulSwaps = swapsData?.filter(swap => swap.status === 'completed').length || 0;
+      
+      // Count successful swaps (both as requester and as item owner)
+      // A successful swap is either:
+      // 1. A swap with status 'completed'
+      // 2. An item with status 'swapped' (which indicates a successful swap)
+      const completedSwaps = swapsData?.filter(swap => swap.status === 'completed').length || 0;
+      const swappedItems = itemsData?.filter(item => item.status === 'swapped').length || 0;
+      const successfulSwaps = completedSwaps + swappedItems;
+      
+      console.log('Fetched swaps:', swapsData);
+      console.log('Completed swaps:', completedSwaps);
+      console.log('Swapped items:', swappedItems);
+      console.log('Total successful swaps:', successfulSwaps);
+      
       const pointsEarned = itemsData?.reduce((sum, item) => {
         if (item.status === 'swapped') return sum + item.points_value;
         return sum;
