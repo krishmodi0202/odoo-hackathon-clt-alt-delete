@@ -60,11 +60,9 @@ export function Navigation() {
                 <Link href="/items/add" className="btn-outline text-sm">
                   List Item
                 </Link>
-                {user.email?.includes('admin') && (
-                  <Link href="/admin" className="btn-outline text-sm bg-red-50 text-red-700 border-red-200 hover:bg-red-100">
-                    Admin
-                  </Link>
-                )}
+                <Link href="/admin/login" className="btn-outline text-sm bg-red-50 text-red-700 border-red-200 hover:bg-red-100">
+                  Admin
+                </Link>
                 <button onClick={signOut} className="btn-secondary text-sm">
                   Sign Out
                 </button>
