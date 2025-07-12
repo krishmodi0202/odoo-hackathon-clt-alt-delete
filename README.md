@@ -49,7 +49,7 @@ ReWear is a modern, sustainable fashion platform that enables users to exchange 
 
 <div align="center">
 
-![Platform Preview](https://via.placeholder.com/800x400/10B981/FFFFFF?text=ReWear+Platform+Preview)
+![Platform Preview]([https://drive.google.com/file/d/1nVG45XkISGBOafVPvjGwRVfyQNmvpr_a/view])
 
 </div>
 
