@@ -2,9 +2,13 @@
 
 Team Members :
 Krish Modi - krishmodi33@gmail.com
+
 Ansh Soni - ansh.soni0403@gmail.com
+
 Pratham Patel - pratham042002@gmail.com
+
 Aneri Shah - anerishah2424@gmail.com
+
 PROBLEM STATEMENT
 # TOPIC 3- ReWear – Community Clothing Exchange 
 Overview: 
