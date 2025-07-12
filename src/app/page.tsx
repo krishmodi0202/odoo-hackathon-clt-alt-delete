@@ -12,7 +12,8 @@ import {
   ClockIcon,
   ShieldCheckIcon,
   ChatBubbleLeftRightIcon,
-  StarIcon
+  StarIcon,
+  LightBulbIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -177,15 +178,15 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Environmental Impact */}
+            {/* AI Suggestions */}
             <div className="card p-8 text-center group">
-              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-teal-500 to-blue-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <GlobeAltIcon className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <LightBulbIcon className="h-8 w-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900">Save the Planet</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">AI-Powered Suggestions</h3>
               <p className="text-gray-600 leading-relaxed">
-                Every swap reduces textile waste. Be part of the solution 
-                to fashion's environmental impact!
+                Get intelligent suggestions for titles, descriptions, and pricing! 
+                Our AI helps you create compelling listings instantly.
               </p>
             </div>
           </div>
