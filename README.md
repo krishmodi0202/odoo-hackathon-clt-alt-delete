@@ -1,11 +1,14 @@
 **Team 2213**
+
 Team Members :
 Krish Modi - keishmodi33@gmail.com
 Ansh Soni - ansh.soni0403@gmail.com
 Pratham Patel - pratham042002@gmail.com
 Aneri Shah - anerishah2424@gmail.com
+
 **TOPIC 3- ReWear – Community Clothing Exchange **
 Overview: 
+
 **Develop ReWear, a web-based platform that enables users to exchange unused clothing 
 through direct swaps or a point-based redemption system. The goal is to promote sustainable 
 fashion and reduce textile waste by encouraging users to reuse wearable garments instead of 
