@@ -12,7 +12,6 @@
 ### 🚀 **Team CLT-ALT-DLT** | **Team #2213**
 
 [![GitHub Stars](https://img.shields.io/github/stars/krishmodi0202/odoo-hackathon-clt-alt-delete?style=for-the-badge&logo=github)](https://github.com/krishmodi0202/odoo-hackathon-clt-alt-delete)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 </div>
 
