@@ -11,6 +11,7 @@
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
+    "framer-motion": "^12.23.3",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "querystring-es3": "^0.2.1",
@@ -19,6 +20,7 @@
     "react-router-dom": "^7.3.0",
     "react-scripts": "5.0.1",
     "stream-browserify": "^3.0.0",
+    "swiper": "^11.2.10",
     "url": "^0.11.4",
     "web-vitals": "^2.1.4"
   },
@@ -47,12 +49,11 @@
     ]
   },
   "browser": {
-  "crypto": "crypto-browserify",
-  "stream": "stream-browserify",
-  "path": "path-browserify",
-  "querystring": "querystring-es3",
-  "zlib": "browserify-zlib",
-  "buffer": "buffer"
-}
-
+    "crypto": "crypto-browserify",
+    "stream": "stream-browserify",
+    "path": "path-browserify",
+    "querystring": "querystring-es3",
+    "zlib": "browserify-zlib",
+    "buffer": "buffer"
+  }
 }

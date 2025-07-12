@@ -302,7 +302,7 @@ const PostItem = () => {
         >
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 p-4 mb-6 rounded">
-              {error}
+              {typeof error === 'string' ? error : error?.message || 'An error occurred'}
             </div>
           )}
 
