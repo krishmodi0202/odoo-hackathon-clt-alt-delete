@@ -54,6 +54,9 @@ export function Navigation() {
                 <Link href="/browse" className="btn-outline text-sm">
                   Browse Items
                 </Link>
+                <Link href="/swaps" className="btn-outline text-sm">
+                  Swaps
+                </Link>
                 <Link href="/items/add" className="btn-outline text-sm">
                   List Item
                 </Link>

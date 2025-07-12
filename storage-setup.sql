@@ -1,29 +1,35 @@
--- ReWear Storage Setup Script
--- Run this in your Supabase SQL Editor after the database setup
+-- Storage Setup for ReWear App
+-- Run this in your Supabase SQL Editor
 
 -- Create storage bucket for item images
-INSERT INTO storage.buckets (id, name, public) 
+INSERT INTO storage.buckets (id, name, public)
 VALUES ('item-images', 'item-images', true)
 ON CONFLICT (id) DO NOTHING;
 
--- Create storage policies for item images
-CREATE POLICY "Anyone can view item images" ON storage.objects
-  FOR SELECT USING (bucket_id = 'item-images');
+-- Allow authenticated users to upload images
+CREATE POLICY "Allow authenticated uploads" ON storage.objects
+FOR INSERT WITH CHECK (
+  bucket_id = 'item-images' 
+  AND auth.role() = 'authenticated'
+);
 
-CREATE POLICY "Authenticated users can upload item images" ON storage.objects
-  FOR INSERT WITH CHECK (
-    bucket_id = 'item-images' AND 
-    auth.role() = 'authenticated'
-  );
+-- Allow public access to view images
+CREATE POLICY "Allow public viewing" ON storage.objects
+FOR SELECT USING (bucket_id = 'item-images');
 
-CREATE POLICY "Users can update their own item images" ON storage.objects
-  FOR UPDATE USING (
-    bucket_id = 'item-images' AND 
-    auth.role() = 'authenticated'
-  );
+-- Allow users to delete their own images
+CREATE POLICY "Allow user deletion" ON storage.objects
+FOR DELETE USING (
+  bucket_id = 'item-images' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
 
-CREATE POLICY "Users can delete their own item images" ON storage.objects
-  FOR DELETE USING (
-    bucket_id = 'item-images' AND 
-    auth.role() = 'authenticated'
-  ); 
+-- Allow users to update their own images
+CREATE POLICY "Allow user updates" ON storage.objects
+FOR UPDATE USING (
+  bucket_id = 'item-images' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+-- Enable RLS on storage.objects
+ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY; 

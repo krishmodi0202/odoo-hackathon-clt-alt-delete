@@ -11,7 +11,8 @@ import {
   HeartIcon, 
   CurrencyDollarIcon,
   ClockIcon,
-  ArrowRightIcon
+  ArrowRightIcon,
+  ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -225,6 +226,17 @@ export default function DashboardPage() {
                 </div>
                 <ArrowRightIcon className="h-5 w-5 text-gray-400" />
               </Link>
+
+              <Link 
+                href="/swaps" 
+                className="flex items-center justify-between p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+              >
+                <div className="flex items-center">
+                  <ChatBubbleLeftRightIcon className="h-6 w-6 text-purple-600 mr-3" />
+                  <span className="font-medium">Manage Swaps</span>
+                </div>
+                <ArrowRightIcon className="h-5 w-5 text-gray-400" />
+              </Link>
             </div>
           </div>
 
@@ -241,7 +253,15 @@ export default function DashboardPage() {
                 {userItems.slice(0, 3).map((item) => (
                   <div key={item.id} className="flex items-center p-4 bg-gray-50 rounded-lg">
                     <div className="w-12 h-12 bg-gray-200 rounded-lg mr-4 flex items-center justify-center">
-                      <HeartIcon className="h-6 w-6 text-gray-400" />
+                      {item.images && item.images.length > 0 ? (
+                        <img 
+                          src={item.images[0]} 
+                          alt={item.title}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <HeartIcon className="h-6 w-6 text-gray-400" />
+                      )}
                     </div>
                     <div className="flex-1">
                       <p className="font-medium">{item.title}</p>
@@ -249,34 +269,39 @@ export default function DashboardPage() {
                         Listed on {new Date(item.created_at).toLocaleDateString()}
                       </p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      item.status === 'available' ? 'bg-green-100 text-green-800' :
-                      item.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {item.status}
-                    </span>
+                    <Link href={`/items/${item.id}`} className="text-emerald-600 hover:text-emerald-500">
+                      View
+                    </Link>
                   </div>
                 ))}
+                
                 {userSwaps.slice(0, 3).map((swap) => (
                   <div key={swap.id} className="flex items-center p-4 bg-gray-50 rounded-lg">
                     <div className="w-12 h-12 bg-gray-200 rounded-lg mr-4 flex items-center justify-center">
-                      <SparklesIcon className="h-6 w-6 text-gray-400" />
+                      {swap.items?.images && swap.items.images.length > 0 ? (
+                        <img 
+                          src={swap.items.images[0]} 
+                          alt={swap.items.title}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                      ) : (
+                        <HeartIcon className="h-6 w-6 text-gray-400" />
+                      )}
                     </div>
                     <div className="flex-1">
                       <p className="font-medium">Swap request for {swap.items?.title}</p>
                       <p className="text-sm text-gray-500">
-                        Requested on {new Date(swap.created_at).toLocaleDateString()}
+                        Status: <span className={`font-medium ${
+                          swap.status === 'pending' ? 'text-yellow-600' :
+                          swap.status === 'accepted' ? 'text-green-600' :
+                          swap.status === 'rejected' ? 'text-red-600' :
+                          'text-blue-600'
+                        }`}>{swap.status}</span>
                       </p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      swap.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      swap.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                      swap.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {swap.status}
-                    </span>
+                    <Link href={`/items/${swap.item_id}`} className="text-emerald-600 hover:text-emerald-500">
+                      View
+                    </Link>
                   </div>
                 ))}
               </div>

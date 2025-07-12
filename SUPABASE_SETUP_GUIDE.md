@@ -1,77 +1,87 @@
-# Supabase Setup Guide for ReWear
+# Supabase Setup Guide
 
-## Step 1: Create Environment File
+## 1. Create Supabase Project
 
-Create a `.env.local` file in your project root with your Supabase credentials:
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. Note down your project URL and anon key
 
-```bash
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://ohrmkrbzjkowqvsybfkb.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9ocm1rcmJ6amtvd3F2c3liZmtiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyOTQxNTYsImV4cCI6MjA2Nzg3MDE1Nn0.LIVLf2PofVDnn7fwLWLBr3S0jBI0e5hBJARHgqCCRKk
+## 2. Database Setup
 
-# App Configuration
+Run the SQL commands from `database-setup.sql` in your Supabase SQL editor.
+
+## 3. Storage Setup
+
+### Create Storage Bucket
+
+1. Go to your Supabase dashboard
+2. Navigate to Storage in the sidebar
+3. Click "Create a new bucket"
+4. Name it `item-images`
+5. Make it public (uncheck "Private bucket")
+6. Click "Create bucket"
+
+### Set Storage Policies
+
+Run these SQL commands in your Supabase SQL editor:
+
+```sql
+-- Allow authenticated users to upload images
+CREATE POLICY "Allow authenticated uploads" ON storage.objects
+FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+-- Allow public access to view images
+CREATE POLICY "Allow public viewing" ON storage.objects
+FOR SELECT USING (bucket_id = 'item-images');
+
+-- Allow users to delete their own images
+CREATE POLICY "Allow user deletion" ON storage.objects
+FOR DELETE USING (auth.uid()::text = (storage.foldername(name))[1]);
+```
+
+## 4. Environment Variables
+
+Create a `.env.local` file in your project root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-## Step 2: Set Up Database Schema
+Or run `node create-env.js` to create it automatically.
 
-1. Go to your Supabase dashboard: https://supabase.com/dashboard
-2. Select your project: `ohrmkrbzjkowqvsybfkb`
-3. Go to **SQL Editor** in the left sidebar
-4. Click **New Query**
-5. Copy and paste the entire content from `database-setup.sql`
-6. Click **Run** to execute the script
+## 5. Authentication Setup
 
-## Step 3: Set Up Storage
+1. Go to Authentication > Settings in your Supabase dashboard
+2. Configure your site URL (e.g., `http://localhost:3000`)
+3. Add redirect URLs:
+   - `http://localhost:3000/auth/callback`
+   - `http://localhost:3000/dashboard`
 
-1. In the same SQL Editor, create another **New Query**
-2. Copy and paste the entire content from `storage-setup.sql`
-3. Click **Run** to execute the script
+## 6. Row Level Security (RLS)
 
-## Step 4: Verify Setup
+Make sure RLS is enabled on your tables and the policies from `database-setup.sql` are applied.
 
-1. Go to **Table Editor** in the left sidebar
-2. You should see these tables:
-   - `profiles`
-   - `items`
-   - `swaps`
+## 7. Testing
 
-3. Go to **Storage** in the left sidebar
-4. You should see a bucket called `item-images`
-
-## Step 5: Test the Connection
-
-Run your development server:
-
-```bash
-npm run dev
-```
-
-The app should now connect to Supabase successfully!
+1. Start your development server: `npm run dev`
+2. Sign up for a new account
+3. Try uploading an image when creating an item
+4. Verify images are visible in the item details
 
 ## Troubleshooting
 
-### If you get connection errors:
-1. Check that your `.env.local` file exists and has the correct credentials
-2. Make sure you've run both SQL scripts in Supabase
-3. Restart your development server after creating the `.env.local` file
+### Images not showing
+- Check if the storage bucket `item-images` exists
+- Verify storage policies are set correctly
+- Check browser console for CORS errors
 
-### If tables don't appear:
-1. Check the SQL Editor for any error messages
-2. Make sure you're in the correct project
-3. Try running the scripts one section at a time
+### Authentication issues
+- Verify environment variables are set correctly
+- Check Supabase authentication settings
+- Ensure redirect URLs are configured
 
-### If storage doesn't work:
-1. Verify the storage bucket was created
-2. Check that the storage policies were applied
-3. Make sure you're authenticated when testing uploads
-
-## Next Steps
-
-Once Supabase is set up, you can:
-1. Start building the authentication system
-2. Create the landing page
-3. Implement item management features
-4. Add the swap system
-
-Your database is now ready for the ReWear application! 🎉 
+### Database errors
+- Run the database setup SQL again
+- Check RLS policies are enabled
+- Verify table structure matches the schema 

@@ -93,40 +93,44 @@ export default function AddItemPage() {
   }, [mounted, loading, user, router]);
 
   const onDrop = async (acceptedFiles: File[]) => {
-    if (acceptedFiles.length === 0) return;
+    if (!user) return;
 
     setUploading(true);
     const newImages: string[] = [];
 
     try {
       for (const file of acceptedFiles) {
-        // Create a preview URL for immediate display
-        const previewUrl = URL.createObjectURL(file);
-        newImages.push(previewUrl);
-
-        // For now, we'll use the preview URL as the image URL
-        // In a real app, you'd upload to Supabase Storage or another service
-        // const fileExt = file.name.split('.').pop();
-        // const fileName = `${Math.random()}.${fileExt}`;
-        // const filePath = `${user?.id}/${fileName}`;
+        // Upload to Supabase Storage
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const filePath = `${user.id}/${fileName}`;
         
-        // const { error: uploadError } = await supabase.storage
-        //   .from('item-images')
-        //   .upload(filePath, file);
+        const { error: uploadError } = await supabase.storage
+          .from('item-images')
+          .upload(filePath, file);
 
-        // if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          if (uploadError.message.includes('bucket') || uploadError.message.includes('not found')) {
+            alert('Storage bucket not configured. Please contact support.');
+          } else {
+            alert(`Upload failed: ${uploadError.message}`);
+          }
+          throw uploadError;
+        }
 
-        // const { data: { publicUrl } } = supabase.storage
-        //   .from('item-images')
-        //   .getPublicUrl(filePath);
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('item-images')
+          .getPublicUrl(filePath);
 
-        // newImages.push(publicUrl);
+        newImages.push(publicUrl);
       }
 
       setUploadedImages(prev => [...prev, ...newImages]);
     } catch (error) {
       console.error('Error uploading images:', error);
-      alert('Failed to upload images. Please try again.');
+      // Don't show alert here as it's already handled above
     } finally {
       setUploading(false);
     }

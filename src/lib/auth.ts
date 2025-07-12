@@ -17,15 +17,21 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+
     // Get initial session
     const getSession = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) {
           console.error('Error getting session:', error);
+          setLoading(false);
           return;
         }
+        
+        console.log('Initial session:', session?.user?.email);
         setUser(session?.user ?? null);
+        
         if (session?.user) {
           await fetchProfile(session.user.id);
         }
@@ -42,18 +48,28 @@ export function useAuth() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event, session?.user?.email);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
+        
+        if (event === 'SIGNED_IN') {
+          setUser(session?.user ?? null);
+          if (session?.user) {
+            await fetchProfile(session.user.id);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
           setProfile(null);
+        } else if (event === 'TOKEN_REFRESHED') {
+          setUser(session?.user ?? null);
+          if (session?.user) {
+            await fetchProfile(session.user.id);
+          }
         }
+        
         setLoading(false);
       }
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [mounted]);
 
   const fetchProfile = async (userId: string) => {
     try {
