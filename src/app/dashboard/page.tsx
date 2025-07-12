@@ -37,6 +37,9 @@ export default function DashboardPage() {
     if (!user) return;
 
     try {
+      console.log('Fetching user data for:', user.id);
+      console.log('Current profile:', profile);
+
       // Fetch user's items
       const { data: itemsData } = await supabase
         .from('items')
@@ -61,6 +64,18 @@ export default function DashboardPage() {
       setUserItems(itemsData || []);
       setUserSwaps(swapsData || []);
 
+      // Fetch profile data if not available
+      let profileData = profile;
+      if (!profileData) {
+        const { data: fetchedProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+        profileData = fetchedProfile;
+        console.log('Fetched profile data:', fetchedProfile);
+      }
+
       // Calculate stats
       const itemsListed = itemsData?.length || 0;
       const successfulSwaps = swapsData?.filter(swap => swap.status === 'completed').length || 0;
@@ -70,7 +85,10 @@ export default function DashboardPage() {
       }, 0) || 0;
 
       // Get current points from profile
-      const currentPoints = profile?.points || 0;
+      const currentPoints = profileData?.points || 0;
+      
+      console.log('Profile points:', profileData?.points);
+      console.log('Calculated current points:', currentPoints);
 
       setStats({
         itemsListed,
@@ -82,7 +100,7 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
-  }, [user]);
+  }, [user, profile]);
 
   useEffect(() => {
     if (mounted && user) {
