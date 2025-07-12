@@ -11,7 +11,7 @@
 
 ### 🚀 **Team CLT-ALT-DLT** | **Team #2213**
 
-[![GitHub Stars](https://img.shields.io/github/stars/your-username/rewear-app?style=for-the-badge&logo=github)](https://github.com/your-username/rewear-app)
+[![GitHub Stars](https://img.shields.io/github/stars/your-username/rewear-app?style=for-the-badge&logo=github)]([https://github.com/your-username/rewear-app](https://github.com/krishmodi0202/odoo-hackathon-clt-alt-delete/blob/main/README.md))
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 </div>
