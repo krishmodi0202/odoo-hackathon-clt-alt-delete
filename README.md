@@ -355,7 +355,7 @@ We welcome contributions from the community! Here's how you can help:
 - **📚 Documentation**: Check the `/docs` folder for detailed guides
 
 ### Team Contact
-- **Krish Modi**: keishmodi33@gmail.com
+- **Krish Modi**: krishmodi33@gmail.com
 - **Ansh Soni**: ansh.soni0403@gmail.com
 - **Pratham Patel**: pratham042002@gmail.com
 - **Aneri Shah**: anerishah2424@gmail.com
