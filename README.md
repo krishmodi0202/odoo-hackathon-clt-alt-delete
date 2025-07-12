@@ -322,11 +322,6 @@ NEXT_PUBLIC_APP_URL=your_app_url
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
 
 ## 🤝 Contributing
 
@@ -352,7 +347,6 @@ We welcome contributions from the community! Here's how you can help:
 - **🐛 Bug Reports**: Create an issue in the GitHub repository
 - **💡 Feature Requests**: Use the GitHub discussions
 - **📧 Email**: Contact the development team directly
-- **📚 Documentation**: Check the `/docs` folder for detailed guides
 
 ### Team Contact
 - **Krish Modi**: krishmodi33@gmail.com
