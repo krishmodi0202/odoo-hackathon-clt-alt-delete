@@ -286,7 +286,7 @@ export default function Home() {
             <div className="flex justify-center space-x-6 text-sm text-gray-400">
               <span>&copy; 2025 {APP_CONFIG.name}</span>
               <span>•</span>
-              <span>Built with ❤️ for the planet</span>
+              <span>Developed By Clt_Alt_Del</span>
             </div>
           </div>
         </div>
