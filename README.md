@@ -1,7 +1,7 @@
 # *Team 2213*
 
 Team Members :
-Krish Modi - keishmodi33@gmail.com
+Krish Modi - krishmodi33@gmail.com
 Ansh Soni - ansh.soni0403@gmail.com
 Pratham Patel - pratham042002@gmail.com
 Aneri Shah - anerishah2424@gmail.com
